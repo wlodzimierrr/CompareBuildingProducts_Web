@@ -3,11 +3,10 @@ import { Inter } from "next/font/google";
 import { Icons } from "@/components/Icons";
 
 import "./globals.css";
-import { NavigationMenuDemo } from "../components/NavBar1";
-import { NavigationMenuDemo1 } from "../components/NavBar2";
-import { NavigationMenuDemo3 } from "../components/NavBar3";
+import { NavigationMenuDemo } from "../components/NavBar";
 import Link from "next/link";
 import React, { Suspense } from "react";
+import { MobileNavigation } from "@/components/MobileNavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 const SearchBar = React.lazy(() => import('@/components/SearchBar'));
@@ -46,27 +45,28 @@ export default function RootLayout({
               fill='url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)'
           />
           </svg>
-          <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex gap-16 lg:px-8 lg:py-24 text-amber-500">
-            <div className="h-full w-full flex flex-col items-center gap-4">
+          <div className="mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pb-32 lg:flex gap-16 lg:px-8 lg:py-24 text-amber-500">
+            <div className="md:hidden absolute top-4 right-4">
+              <MobileNavigation />
+            </div>
+            <div className="h-full w-full flex flex-col items-center md:gap-4 ">
               <Icons.Hammer className="h-16 w-16"/>
               <Link href="/" passHref>
               <h1 className="tracking-tight text-4xl sm:text-6xl font-bold">
-                Compare Building Items
+                Compare Building <span className="">Products</span>
               </h1>
               </Link>
-              <p className="max-w-xl text-center text-lg text-amber-600">
+              <p className="max-w-xl text-center text-lg text-amber-600 pt-4 lg:pb-4">
                 From builders to builders
               </p>
-              {/* <div style={{ marginBottom: '-10px' }} className=""><NavigationMenuDemo/></div>
-              <div style={{ marginBottom: '-10px' }} className=""><NavigationMenuDemo1/></div>
-              <div ><NavigationMenuDemo3/></div> */}
-              <div className=" text-stone-800 mx-auto mt-16 w-full max-w-2x1 flex flex-col">
+              <div className="invisible md:visible"><NavigationMenuDemo/></div>
+              <div className=" text-stone-800 mx-auto lg:mt-8 w-full max-w-2x1 flex flex-col">
               <Suspense fallback={<div>Loading...</div>}>
                 <SearchBar />
               </Suspense>
                 {children}
               </div>
-              <footer className=" text-amber-500 text-center p-4 mt-8">
+              <footer className=" text-amber-500 text-center p-4 mt-20 lg:mt-10">
               <p className="text-sm">
                  {new Date().getFullYear()} | Made By <a className="hover:text-amber-100 hover:underline" target="_blank" href="https://github.com/wlodzimierrr">Wlodzimierrr</a>
               </p>
