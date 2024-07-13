@@ -134,7 +134,7 @@ const Page = ({ searchParams }: PageProps) => {
           <div className='w-full flex-1 space-y-2 py-1'>
             <h1 className='text-lg font-medium text-gray-900'>{product.product_name}</h1>
             <StarRating rating={product.rating} ratingCount={product.rating_count}/>
-            <p className='prose prose-sm text-gray-500 line-clamp-3'>{product.category_name}</p>
+            <p className='prose prose-sm text-gray-500 line-clamp-3'>{categoryIdsByName[product.category_name]}</p>
             <p className='prose prose-sm text-gray-500 line-clamp-3'>{shopNames[product.shop_id]}</p>
             <p className='text-base font-medium text-gray-900'>Price: £{parseFloat(product.price).toFixed(2)} inc vat</p>
           </div>
