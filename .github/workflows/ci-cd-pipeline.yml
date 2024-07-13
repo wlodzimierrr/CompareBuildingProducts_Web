@@ -26,10 +26,9 @@ jobs:
       
       - name: Push Docker image to GitHub Container Registry
         run: |
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
           docker push ghcr.io/wlodzimierrr/compare_frontend:latest
-        env:
-          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      
+
       - name: Configure Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
