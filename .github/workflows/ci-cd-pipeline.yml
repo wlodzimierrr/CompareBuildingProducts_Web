@@ -1,4 +1,4 @@
-name: Deploy to Google Cloud VM
+name: CI/CD Pipeline
 
 on:
   push:
@@ -16,10 +16,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Create .env file
-        run: |
-          echo "NEXT_PUBLIC_AGOLIA=${{ secrets.NEXT_PUBLIC_AGOLIA }}" >> ./compare_frontend/.env
-          echo "NEXT_PUBLIC_AGOLIA_PASSWORD=${{ secrets.NEXT_PUBLIC_AGOLIA_PASSWORD }}" >> ./compare_frontend/.env
+        - name: Create .env file
+          run: |
+            echo "NEXT_PUBLIC_AGOLIA=${{ secrets.NEXT_PUBLIC_AGOLIA }}" >> ./compare_frontend/.env
+            echo "NEXT_PUBLIC_AGOLIA_PASSWORD=${{ secrets.NEXT_PUBLIC_AGOLIA_PASSWORD }}" >> ./compare_frontend/.env
 
       - name: Build Docker image for compare_frontend
         run: docker build -t ghcr.io/wlodzimierrr/compare_frontend:latest ./compare_frontend
@@ -44,6 +44,7 @@ jobs:
         env:
           GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
           GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
+
       - name: Cleanup .env file
-          if: always()
-          run: rm -f ./compare_frontend/.env
+        if: always()
+        run: rm -f ./compare_frontend/.env
