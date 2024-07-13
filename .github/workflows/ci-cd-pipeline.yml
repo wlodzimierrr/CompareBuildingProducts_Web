@@ -37,7 +37,9 @@ jobs:
           export_default_credentials: true
 
       - name: Authenticate gcloud
-        run: gcloud auth activate-service-account --key-file=${{ secrets.GCE_SA_KEY }}
+        run: |
+          echo ${{ secrets.GCE_SA_KEY }} | base64 --decode > /tmp/keyfile.json
+          gcloud auth activate-service-account --key-file=/tmp/keyfile.json
 
       - name: SSH into Google Cloud VM and update Docker image
         run: |
