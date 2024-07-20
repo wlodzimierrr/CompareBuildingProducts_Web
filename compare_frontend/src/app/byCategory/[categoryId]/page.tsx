@@ -17,9 +17,10 @@ const client = algoliasearch(algolia, algolia_API_key);
 const index = client.initIndex('main_index');
 
 const shopNames: { [key: number]: string } = {
-  1: 'Screwfix',
+  1: 'B&Q',
   2: 'Tradepoint',
   3: 'Screwfix',
+  4: 'Wickes'
 };
 
 const categoryIdsByName: { [key: string]: string } = {
