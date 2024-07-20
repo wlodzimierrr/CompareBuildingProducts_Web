@@ -50,7 +50,7 @@ jobs:
           docker pull ghcr.io/wlodzimierrr/compare_frontend:latest &&
           docker stop compare_frontend &&
           docker rm compare_frontend &&
-          docker run -d --name compare_frontend -p 3000:3000 ghcr.io/wlodzimierrr/compare_frontend:latest"
+          docker run -d --name compare_frontend --network monitoring -p 3000:3000 ghcr.io/wlodzimierrr/compare_frontend:latest"
         env:
           GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
           GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
