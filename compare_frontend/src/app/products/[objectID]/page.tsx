@@ -67,10 +67,9 @@ interface PageProps {
     const { objectID } = params
     const [results, setResults] = useState<Result[]>([]);
     const [product, setProduct] = useState<Product>();
- 
-    if (!objectID) return notFound()
   
       useEffect(() => {
+        if (!objectID) return;
         let isMounted = true;
     
         const fetchItem = async () => {
@@ -130,8 +129,8 @@ interface PageProps {
         return () => {
           isMounted = false;
         };
-      }, [objectID, searchClient]);
-    
+      }, [objectID]);
+      if (!objectID) return notFound()
 
     return (
       <div className='py-8 pb-8 px-12 divide-y divide-zinc-100 bg-white shadow-md rounded-b-md'>
