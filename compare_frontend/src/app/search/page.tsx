@@ -53,6 +53,7 @@ interface Product {
   subcategory_name: string;
   rating_count: number,
   rating:  number,
+  objectID: string;
 }
 
 interface PageProps {
@@ -128,7 +129,7 @@ const Page = ({ searchParams }: PageProps) => {
   return (
     <ul className='py-4 divide-y divide-zinc-100 bg-white shadow-md rounded-b-md'>
     {products.map(product => (
-      <Link key={product.product_id} href={product.page_url} passHref target="_blank">
+      <Link key={product.objectID} href={`/products/${product.objectID}`}>
         <li className='mx-auto py-4 b-8 px-8 flex flex-col sm:flex-row space-x-4 cursor-pointer'>
           <div className='relative flex items-center bg-zinc-100 rounded-lg h-40 w-40 mx-auto sm:mx-0'>
             <Image src={product.image_url} alt={product.product_name} fill style={{ objectFit: 'cover' }} />
