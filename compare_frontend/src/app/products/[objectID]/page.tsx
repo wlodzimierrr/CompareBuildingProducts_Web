@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table"
 import StarRating from '@/components/StarRating';
 import BackButton from '@/components/backButton'
-import {TradepointSVG, ScrewfixSVG} from '@/images/tradepoint';
+import {TradepointSVG, ScrewfixSVG, WickesSVG, BQSVG} from '@/images/tradepoint';
 
 const algolia = process.env.NEXT_PUBLIC_AGOLIA as string;
 const algolia_API_key = process.env.NEXT_PUBLIC_AGOLIA_PASSWORD as string;
@@ -26,10 +26,10 @@ const algolia_API_key = process.env.NEXT_PUBLIC_AGOLIA_PASSWORD as string;
 const searchClient = algoliasearch(algolia, algolia_API_key);
 
 const shopSVGs: { [key: number]: React.ReactNode } = {
-  // 1: <BQSVG />,
+  1: <BQSVG />,
   2: <div className='bg-stone-800'><TradepointSVG /></div>,
   3: <ScrewfixSVG />,
-  // 4: <WickesSVG />
+  4: <WickesSVG />
 };
 
 interface PageProps {
@@ -190,9 +190,7 @@ interface PageProps {
               <TableBody className='cursor-pointer'>
                 {results.map((result) => (
                   <TableRow key={result.objectID} onClick={() => window.open(result.page_url, '_blank')} style={{ cursor: 'pointer' }}>
-                    <TableCell className="font-medium">  {shopSVGs[result.shop_id] || <span>Unknown Shop</span>}</TableCell>
-                    <TableCell className=''>{result.product_name}</TableCell>
-                    <TableCell  className="hidden md:flex">{<StarRating rating={result.rating || 0 } ratingCount={result.rating_count}/>}</TableCell>            
+                    <TableCell className="font-medium">  {shopSVGs[result.shop_id] ? <div className="w-12 h-12 flex items-center justify-center">{shopSVGs[result.shop_id]}</div> : <span>Unknown Shop</span>}</TableCell>                    <TableCell className=''>{result.product_name}</TableCell>                    <TableCell  className="hidden md:flex">{<StarRating rating={result.rating || 0 } ratingCount={result.rating_count}/>}</TableCell>            
                     <TableCell className="text-right">£{result.price.toFixed(2)}</TableCell>
                   </TableRow>
                 ))}

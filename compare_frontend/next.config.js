@@ -4,6 +4,7 @@ module.exports = {
       { hostname: 'media.screwfix.com' },
       { hostname: 'kingfisher.scene7.com' },
       { hostname: 'media.wickes.co.uk' },
+      { hostname: 'media.diy.com' },
     ],
   },
   reactStrictMode: true,
