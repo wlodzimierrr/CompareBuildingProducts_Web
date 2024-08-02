@@ -27,7 +27,7 @@ const searchClient = algoliasearch(algolia, algolia_API_key);
 
 const shopSVGs: { [key: number]: React.ReactNode } = {
   1: <BQSVG />,
-  2: <div className='bg-stone-800'><TradepointSVG /></div>,
+  2: <TradepointSVG />,
   3: <ScrewfixSVG />,
   4: <WickesSVG />
 };
