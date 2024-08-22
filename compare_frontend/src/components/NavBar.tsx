@@ -100,23 +100,23 @@ export function NavigationMenuDemo() {
       <NavigationMenuList className="center  opacity-90 shadow-amber-500 m-0 flex list-none rounded-[6px] ">
      
         <NavigationMenuItem className="focus:shadow-stone-700 ">
-          <NavigationMenuTrigger className="text-amber-500 hover:text-amber-500 bg-stone-800 hover:bg-stone-800 focus:bg-stone-400  focus:shadow-stone-700 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
+          <NavigationMenuTrigger className="text-amber-300 hover:text-amber-100 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 focus:shadow-teal-400 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]">            
             Building Materials{' '} </NavigationMenuTrigger>
           <NavigationMenuContent >
-          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[1300px]">
-            {components1.map((component1) => (
-              <Link key={component1.title} href={component1.href} passHref>
-                <ListItem title={component1.title}>
-                  {component1.description}
-                </ListItem>
-              </Link>
-            ))}
-          </ul>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[1300px]">
+              {components1.map((component1) => (
+                <Link key={component1.title} href={component1.href} passHref>
+                  <ListItem title={component1.title}>
+                    {component1.description}
+                  </ListItem>
+                </Link>
+              ))}
+            </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem className="focus:shadow-stone-700 ">
-          <NavigationMenuTrigger className="text-amber-500 hover:text-amber-500 bg-stone-800 hover:bg-stone-800 focus:bg-stone-400  focus:shadow-stone-700 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
+          <NavigationMenuTrigger className="text-amber-300 hover:text-amber-100 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 focus:shadow-teal-400 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
           Electrical & Security {' '} </NavigationMenuTrigger>
           <NavigationMenuContent >
           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[1300px]">
@@ -134,7 +134,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="focus:shadow-stone-700 ">
-          <NavigationMenuTrigger className="text-amber-500 hover:text-amber-500 bg-stone-800 hover:bg-stone-800 focus:bg-stone-400  focus:shadow-stone-700 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
+          <NavigationMenuTrigger className="text-amber-300 hover:text-amber-100 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 focus:shadow-teal-400 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
           Bathrooms & Kitchens{' '} </NavigationMenuTrigger>
           <NavigationMenuContent >
           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[1300px]">
@@ -152,7 +152,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="focus:shadow-stone-700 ">
-          <NavigationMenuTrigger className="text-amber-500 hover:text-amber-500 bg-stone-800 hover:bg-stone-800 focus:bg-stone-400  focus:shadow-stone-700 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
+          <NavigationMenuTrigger className="text-amber-300 hover:text-amber-100 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 focus:shadow-teal-400 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none shadow-[0_1px_1px_0px]"> 
           Tools, Furniture & Garden{' '} </NavigationMenuTrigger>
           <NavigationMenuContent >
           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[1300px]">
@@ -189,8 +189,8 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-amber-600 text-sm font-medium leading-none">{title}</div>
-          <p className="text-stone-500 line-clamp-2 text-sm leading-snug text-muted-foreground">
+          <div className="text-teal-300 text-sm font-medium leading-none">{title}</div>
+          <p className="text-stone-400 line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </a>
