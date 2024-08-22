@@ -63,74 +63,83 @@ interface PageProps {
     };
   }
 
+  const getUniqueTopProducts = (results: SearchResult[]) => {
+    const productMap = new Map<number, SearchResult>();
+  
+    results.forEach((result) => {
+      if (!productMap.has(result.shop_id)) {
+        productMap.set(result.shop_id, result);
+      }
+    });
+  
+    return Array.from(productMap.values());
+  };
+
+  interface SearchResult extends Product {
+    objectID: string;
+  }
+
+  
   const Page = ({ params }: PageProps) => {
     const { objectID } = params
     const [results, setResults] = useState<Result[]>([]);
-    const [product, setProduct] = useState<Product>();
+    const [product, setProduct] = useState<Product | undefined>(undefined);
+    const [topProducts, setTopProducts] = useState<SearchResult[]>([]);
   
-      useEffect(() => {
-        if (!objectID) return;
-        let isMounted = true;
-    
-        const fetchItem = async () => {
-          try {
-            const searchResponse = await searchClient.search([
-              {
-                indexName: 'main_index',
-                query: '',
-                params: {
-                  filters: `objectID:${objectID}`
-                }
-              },
-            ]);
-    
-            if (!isMounted) return;
-    
-            const fetchedProduct = (searchResponse.results[0] as SearchResponse<Product>).hits[0];
-            setProduct(fetchedProduct);
-    
-            const search = instantsearch({
-              indexName: 'main_index',
-              searchClient,
-            });
-    
-            const container = document.createElement('div');
-    
-            search.addWidgets([
-              lookingSimilar({
-                container,
-                objectIDs: [fetchedProduct.objectID],
-                transformItems(items) {
-                  if (!isMounted) return items;
-    
-                  const similarProducts = items as unknown as Result[];
-                  const filteredProducts = similarProducts.filter(p => p.objectID !== fetchedProduct.objectID);
-    
-                  const typedProduct = fetchedProduct as unknown as Result;
-                  setResults([typedProduct, ...filteredProducts]);
-    
-                  return [typedProduct, ...filteredProducts];
-                },
-              }),
-            ]);
-    
-            search.start();
-    
-            return () => {
-              search.dispose();
-            };
-          } catch (error) {
-            console.log('Error fetching item:', error);
-          }
-        };
-    
-        fetchItem();
-    
-        return () => {
-          isMounted = false;
-        };
-      }, [objectID]);
-      if (!objectID) return notFound()
+  useEffect(() => {
+    if (!objectID) return;
+    let isMounted = true;
+
+    const fetchItem = async () => {
+      try {
+        const searchResponse = await searchClient.search([
+          {
+            indexName: 'main_index',
+            query: '',
+            params: {
+              filters: `objectID:${objectID}`,
+            },
+          },
+        ]);
+
+        if (!isMounted) return;
+
+        const fetchedProduct = (searchResponse.results[0] as SearchResponse<Product>).hits[0];
+        setProduct(fetchedProduct);
+
+        const resultsResponse = await searchClient.search([
+          {
+            indexName: 'main_index',
+            query: fetchedProduct.product_name,
+            params: {
+              hitsPerPage: 20,
+              removeWordsIfNoResults: 'firstWords',
+              advancedSyntax: true,
+              optionalWords: fetchedProduct.product_name.split(' '),
+              typoTolerance: true,
+              ignorePlurals: true,
+            },
+          },
+        ]);
+
+        const topMatches = (resultsResponse.results[0] as SearchResponse<SearchResult>).hits;
+        setResults(topMatches as unknown as Result[]);
+
+        const uniqueTopProducts = getUniqueTopProducts(topMatches);
+        setTopProducts(uniqueTopProducts);
+      } catch (error) {
+        console.log('Error fetching item:', error);
+      }
+    };
+    fetchItem();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [objectID]);
+
+  if (!objectID) return notFound();
+
 
     return (
       <div className='py-8 pb-8 px-12 divide-y divide-zinc-100 bg-white shadow-md rounded-b-md'>
@@ -154,8 +163,35 @@ interface PageProps {
             />
           </div>
         </div>
-        {/* Feature list */}
-        <div className='ml-6'>
+        {/* Similar Products Table */}
+        <div className="flex ml-auto">
+            <Table>
+              <TableBody className="cursor-pointer">
+                {topProducts.map((topProduct) => (
+                  <TableRow
+                    key={topProduct.objectID}
+                    onClick={() => window.open(topProduct.page_url, '_blank')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <TableCell className="font-medium">
+                      {shopSVGs[topProduct.shop_id] ? (
+                        <div className="w-12 h-12 flex items-center justify-center">
+                          {shopSVGs[topProduct.shop_id]}
+                        </div>
+                      ) : (
+                        <span>Unknown Shop</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="">{topProduct.product_name}</TableCell>
+                    <TableCell className="text-right">£{topProduct.price.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+         {/* Feature list */}
+         <div className='ml-6'>
           <div className='space-y-6'>
             <ul className='list-disc pl-5'>
               {product?.features?.map((feature: string, index: number) => (
@@ -163,11 +199,6 @@ interface PageProps {
               ))}
             </ul>
           </div>
-          {/* Star rating */}
-          <div className='mt-6 flex items-center'>
-          <StarRating rating={product?.rating || 0 } ratingCount={product?.rating_count || 0} />
-          </div>
-        </div>
         </div>
         {/* Product description */}
           <div className='mt-4'>
