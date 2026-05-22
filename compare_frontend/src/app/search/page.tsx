@@ -102,7 +102,9 @@ const Page = ({ searchParams }: PageProps) => {
     <main className="space-y-4">
       <div className="app-surface p-5">
         <p className="text-sm font-medium uppercase tracking-wide text-amber-400">Search results</p>
-        <h2 className="app-title mt-1 text-2xl font-bold">{products.length} matches for "{query}"</h2>
+        <h2 className="app-title mt-1 text-2xl font-bold">
+          {products.length} matches for <span>&quot;{query}&quot;</span>
+        </h2>
       </div>
       <div className="grid gap-3">
         {products.map((product) => (
