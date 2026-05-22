@@ -1,11 +1,13 @@
-FROM node:lts-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
 # Install dependencies
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
 
 # Copy the rest of the application code
 COPY . .
