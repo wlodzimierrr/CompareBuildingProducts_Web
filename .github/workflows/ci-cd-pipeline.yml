@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: wlodzimierrr/compare_frontend
-  DOCKER_CONTEXT: ./compare_frontend
+  BUILD_CONTEXT: ./compare_frontend
 
 jobs:
   publish:
@@ -53,7 +53,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ${{ env.DOCKER_CONTEXT }}
+          context: ${{ env.BUILD_CONTEXT }}
           platforms: linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
