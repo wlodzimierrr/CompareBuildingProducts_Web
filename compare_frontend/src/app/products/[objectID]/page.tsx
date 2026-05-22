@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { SearchResponse, Hit, HitHighlightResult } from 'instantsearch.js/es';
+import { SearchResponse } from 'instantsearch.js/es';
 import algoliasearch from 'algoliasearch/lite';
 import { ExternalLink, Loader2, ShieldCheck } from 'lucide-react';
 import BackButton from '@/components/backButton';
@@ -48,13 +48,6 @@ interface Product {
   objectID: string;
 }
 
-interface Result extends Hit<Product> {
-  _highlightResult: {
-    product_name: HitHighlightResult;
-    [key: string]: unknown;
-  };
-}
-
 interface SearchResult extends Product {
   objectID: string;
 }
@@ -73,7 +66,7 @@ const getUniqueTopProducts = (results: SearchResult[]) => {
 
 const Page = ({ params }: PageProps) => {
   const { objectID } = params;
-  const [results, setResults] = useState<Result[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [topProducts, setTopProducts] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,7 +110,7 @@ const Page = ({ params }: PageProps) => {
         ]);
 
         const topMatches = (resultsResponse.results[0] as SearchResponse<SearchResult>).hits;
-        setResults(topMatches as unknown as Result[]);
+        setResults(topMatches);
         setTopProducts(getUniqueTopProducts(topMatches));
       } catch (error) {
         console.log('Error fetching item:', error);
