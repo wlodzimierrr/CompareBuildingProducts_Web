@@ -49,7 +49,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, ratingCount }) => {
             ></path>
           </svg>
           <svg
-            className="w-4 h-4 text-gray-300"
+            className="w-4 h-4 text-stone-600"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, ratingCount }) => {
         .map((_, i) => (
           <svg
             key={`empty-${i}`}
-            className="w-4 h-4 text-gray-300"
+            className="w-4 h-4 text-stone-600"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, ratingCount }) => {
         ))}
 
       {/* Rating Count */}
-      <p className="prose prose-sm text-gray-500 ml-2">{rating} ({ratingCount})</p>
+      <p className="prose prose-sm ml-2 text-stone-400">{rating} ({ratingCount})</p>
     </div>
   );
 };

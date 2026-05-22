@@ -1,46 +1,18 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Separator } from "@/components/ui/separator";
-import { Loader2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 import algoliasearch from 'algoliasearch/lite';
 import { useState, useEffect } from 'react';
-import StarRating from '@/components/StarRating';
-
-import dotenv from 'dotenv';
-dotenv.config();
+import EmptyState from '@/components/EmptyState';
+import ProductResultCard from '@/components/ProductResultCard';
+import { categoryNamesById } from '@/lib/catalog';
 
 const algolia = process.env.NEXT_PUBLIC_AGOLIA as string;
 const algolia_API_key = process.env.NEXT_PUBLIC_AGOLIA_PASSWORD as string;
 
 const client = algoliasearch(algolia, algolia_API_key);
 const index = client.initIndex('main_index');
-
-const shopNames: { [key: number]: string } = {
-  1: 'B&Q',
-  2: 'Tradepoint',
-  3: 'Screwfix',
-  4: 'Wickes',
-
-};
-
-const categoryIdsByName: { [key: string]: string } = {
-  '1': "Heating & Plumbing",
-  '2': "Electrical & Lighting",
-  '3': "Smart Home Technology",
-  '4': "Tiling & Flooring",
-  '5': "Bathrooms & Plumbing",
-  '6': "Kitchen & Appliances",
-  '9': "Garden & Landscaping",
-  '10': "Security & Ironmongery",
-  '13': "Painting & Decorating",
-  '14': "Doors & Windows",
-  '15': "Building Supplies",
-  '16': "Tools & Accessories",
-  '17': "Furniture & Accessories"
-};
 
 interface Product {
   product_id: number;
@@ -80,9 +52,9 @@ const Page = ({ searchParams }: PageProps) => {
 
       const IntId = parseInt(query);
       if (!isNaN(IntId)) {
-        const categoryName =categoryIdsByName
+        const categoryName = categoryNamesById[String(IntId)];
         if (categoryName) {
-          router.push(`/categories/${IntId}`);
+          router.push(`/byCategory/${IntId}`);
           return;  
         }
       }
@@ -103,49 +75,41 @@ const Page = ({ searchParams }: PageProps) => {
   }, [query, router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="app-surface p-8 text-center">
+        <Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-400" />
+        <p className="app-copy mt-3 text-sm font-medium">Finding matching products...</p>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className='text-center py-4 bg-white shadow-md rounded-b-md'>
-        <X className='mx-auto h-8 w-8 text-gray-400' />
-        <h3 className='mt-2 text-sm font-semibold text-gray-900'>Error</h3>
-        <p className='text-gray-500'>{error}</p>
-      </div>
+      <EmptyState title="Search failed" message={error} />
     );
   }
 
   if (!products.length) {
     return (
-      <div className='text-center py-4 bg-white shadow-md rounded-b-md'>
-        <X className='mx-auto h-8 w-8 text-gray-400' />
-        <h3 className='mt-2 text-sm font-semibold text-gray-900'>No results</h3>
-        <p className='text-gray-500'>Sorry, we couldn&apost find any matches for <span className='text-green-600 font-medium'>{query}</span>.</p>
-      </div>
+      <EmptyState
+        title="No results"
+        message={<>Sorry, we could not find any matches for <span className="font-semibold text-amber-300">{query}</span>.</>}
+      />
     );
   }
 
   return (
-    <ul className='py-4 divide-y divide-zinc-100 bg-white shadow-md rounded-b-md'>
-    {products.map(product => (
-      <Link key={product.objectID} href={`/products/${product.objectID}`}>
-        <li className='mx-auto py-4 b-8 px-8 flex flex-col sm:flex-row space-x-4 cursor-pointer'>
-          <div className='relative flex items-center bg-zinc-100 rounded-lg h-40 w-40 mx-auto sm:mx-0'>
-            <Image src={product.image_url} alt={product.product_name} fill style={{ objectFit: 'cover' }} />
-          </div>
-          <div className='w-full flex-1 space-y-2 py-1'>
-            <h1 className='text-lg font-medium text-gray-900'>{product.product_name}</h1>
-            <StarRating rating={product.rating} ratingCount={product.rating_count}/>
-            <p className='prose prose-sm text-gray-500 line-clamp-3'>{categoryIdsByName[product.category_name]}</p>
-            <p className='prose prose-sm text-gray-500 line-clamp-3'>{shopNames[product.shop_id]}</p>
-            <p className='text-base font-medium text-gray-900'>Price: £{parseFloat(product.price).toFixed(2)} inc vat</p>
-          </div>
-        </li>
-        <Separator />
-      </Link>
-    ))}
-  </ul>
+    <main className="space-y-4">
+      <div className="app-surface p-5">
+        <p className="text-sm font-medium uppercase tracking-wide text-amber-400">Search results</p>
+        <h2 className="app-title mt-1 text-2xl font-bold">{products.length} matches for "{query}"</h2>
+      </div>
+      <div className="grid gap-3">
+        {products.map((product) => (
+          <ProductResultCard key={product.objectID} product={product} />
+        ))}
+      </div>
+    </main>
   );
 };
 

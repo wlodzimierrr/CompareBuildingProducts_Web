@@ -76,3 +76,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .app-surface {
+    @apply rounded-lg border border-amber-500/20 bg-stone-800/95 text-stone-100 shadow-xl shadow-stone-950/30;
+  }
+
+  .app-surface-soft {
+    @apply rounded-md border border-stone-700/80 bg-stone-900/60 text-stone-100;
+  }
+
+  .app-title {
+    @apply text-amber-100;
+  }
+
+  .app-copy {
+    @apply text-stone-300;
+  }
+
+  .app-subtle {
+    @apply text-stone-400;
+  }
+}
