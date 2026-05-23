@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import ProductImage from "@/components/ProductImage";
 import StarRating from "@/components/StarRating";
 import { formatPrice, getCategoryName, getRetailerName } from "@/lib/catalog";
 
@@ -29,10 +29,9 @@ const ProductResultCard = ({ product }: ProductResultCardProps) => {
       className="group grid gap-4 rounded-lg border border-stone-700/80 bg-stone-800/95 p-4 shadow-lg shadow-stone-950/20 transition hover:-translate-y-0.5 hover:border-amber-500/60 hover:bg-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500 sm:grid-cols-[9rem_1fr_auto]"
     >
       <div className="relative mx-auto aspect-square w-36 overflow-hidden rounded-md border border-stone-700 bg-stone-950/50 sm:mx-0 sm:w-full">
-        <Image
+        <ProductImage
           src={product.image_url}
           alt={product.product_name}
-          fill
           sizes="144px"
           className="object-contain p-2 transition duration-200 group-hover:scale-[1.03]"
         />

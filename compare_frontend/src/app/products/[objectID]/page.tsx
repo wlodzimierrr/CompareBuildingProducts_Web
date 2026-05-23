@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { SearchResponse } from 'instantsearch.js/es';
 import algoliasearch from 'algoliasearch/lite';
 import { ExternalLink, Loader2, ShieldCheck } from 'lucide-react';
 import BackButton from '@/components/backButton';
 import EmptyState from '@/components/EmptyState';
+import ProductImage from '@/components/ProductImage';
 import RetailerLogo from '@/components/RetailerLogo';
 import StarRating from '@/components/StarRating';
 import { Button } from '@/components/ui/button';
@@ -152,12 +152,12 @@ const Page = ({ params }: PageProps) => {
         <BackButton />
         <div className="mt-5 grid gap-6 lg:grid-cols-[18rem_1fr]">
           <div className="relative aspect-square overflow-hidden rounded-lg border border-stone-700 bg-stone-950/50">
-            <Image
-              fill
+            <ProductImage
               priority
               className="object-contain p-4"
-              src={product.image_url || ''}
+              src={product.image_url}
               alt={product.product_name}
+              sizes="(min-width: 1024px) 288px, 100vw"
             />
           </div>
           <div className="flex min-w-0 flex-col justify-between gap-5">
