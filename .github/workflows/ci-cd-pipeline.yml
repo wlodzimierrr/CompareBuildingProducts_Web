@@ -72,7 +72,7 @@ jobs:
       contents: read
     env:
       GITOPS_REPO: wlodzimierrr/homelab-workloads
-      SERVICE_ID: compare-frontend
+      SERVICE_ID: comparebuilding-web
       IMAGE_REPO: ghcr.io/wlodzimierrr/compare_frontend
       TARGET_TAG: sha-${{ github.sha }}
       PORTAL_DEPLOYMENT_API_URL: ${{ secrets.PORTAL_DEPLOYMENT_API_URL }}
@@ -153,12 +153,12 @@ jobs:
           path: homelab-workloads
           branch: ${{ steps.update_patch.outputs.branch_name }}
           delete-branch: true
-          title: "Deploy compare-frontend: ${{ env.TARGET_TAG }} to dev"
-          commit-message: "chore(dev): deploy compare-frontend image ${{ env.TARGET_TAG }}"
+          title: "Deploy ${{ env.SERVICE_ID }}: ${{ env.TARGET_TAG }} to dev"
+          commit-message: "chore(dev): deploy ${{ env.SERVICE_ID }} image ${{ env.TARGET_TAG }}"
           body: |
             Portal-requested dev deploy.
 
-            - Service: `compare-frontend`
+            - Service: `${{ env.SERVICE_ID }}`
             - Target image: `${{ steps.update_patch.outputs.target_image_ref }}`
             - Previous image: `${{ steps.update_patch.outputs.current_image_ref }}`
             - Reason: Publish new service image from `${{ github.repository }}`.
